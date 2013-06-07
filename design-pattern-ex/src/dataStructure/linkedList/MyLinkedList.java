@@ -1,10 +1,7 @@
 package dataStructure.linkedList;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class MyLinkedList<E> {
-	
-	private LinkedList<Integer> example = new LinkedList<Integer>();
 	
 	private int size;
 	private LinkedListNode<E> head = null;
@@ -86,14 +83,37 @@ public class MyLinkedList<E> {
 		return node.getValue();
 	}
 	
-//	public E remove(E obj){
-//		
-//	}
+	public E remove(E obj){
+		
+		if (size==0){
+			return null;
+		}
+		
+		if (head.getValue().equals(obj)){
+			return removeFirst();
+		}
+		
+		LinkedListNode<E> node = head;
+		LinkedListNode<E> removedNode = null;
+		for (int i=0; i<size; i++){
+			if (node.getNext().getValue().equals(obj)){
+				removedNode = node.getNext();
+				node.setNext(removedNode.getNext());
+				removedNode.setNext(null);
+				break;
+			}
+			node = node.getNext();
+		}
+		size--;
+		return removedNode==null ? null : removedNode.getValue();
+	}
 	
 	public void clear(){
-		for (int i=0; i<size; i++){
+		int originalSize = size;
+		for (int i=0; i<originalSize; i++){
 			removeFirst();
 		}
+		tail = head;
 	}
 	
 	public int size(){
@@ -110,6 +130,7 @@ public class MyLinkedList<E> {
 			sb.append(node.getValue().toString());
 			node = node.getNext();
 		}
+		sb.append("]");
 		return new String(sb);
 	}
 	
